@@ -90,10 +90,10 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4235783653538090169}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &2971601725614397466
 Rigidbody:
@@ -125,3 +125,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moonGun: {fileID: 0}
   moonRb: {fileID: 0}
+  _objectList: []
