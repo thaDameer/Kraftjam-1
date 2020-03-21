@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class PlayerLogic : MonoBehaviour
 {
+   
+    public enum PlayerState
+    {
+        Walking,
+        Aiming, 
+        Dead
+    }
+    public PlayerState playerState;
+
     float m_horizontalInput;
     float m_verticalInput;
 
@@ -19,31 +28,25 @@ public class PlayerLogic : MonoBehaviour
     Vector3 m_horizontalMovment;
     bool m_jump = false;
 
-    CharacterController m_characterController;
-    Animator m_animator;
-    [SerializeField]
-    List<AudioClip> m_footstepSounds = new List<AudioClip>();
-    AudioSource m_audioSource;
-    GameObject m_camera;
-    CameraLogic m_cameraLogic;
+    public CharacterController m_characterController;
 
-    void Start()
-    {
-        m_camera = Camera.main.gameObject;
-        if (m_camera)
-        {
-            m_cameraLogic = m_camera.GetComponent<CameraLogic>();
-        }
-        m_audioSource = GetComponent<AudioSource>();
-        m_characterController = GetComponent<CharacterController>();
-        m_animator = GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
     void Update()
     {
         m_horizontalInput = Input.GetAxis("Horizontal");
         m_verticalInput = Input.GetAxis("Vertical");
+        switch (playerState)
+        {
+            case PlayerState.Aiming:
+
+
+                break;
+            case PlayerState.Walking:
+
+                break;
+            case PlayerState.Dead:
+
+                break;
+        }
 
         m_movementInput = new Vector3(m_horizontalInput, 0, m_verticalInput);
 
@@ -51,11 +54,7 @@ public class PlayerLogic : MonoBehaviour
         {
             m_jump = true;
         }
-        if (m_animator)
-        {
-            m_animator.SetFloat("HorizontalInput", m_horizontalInput);
-            m_animator.SetFloat("VerticalInput", m_verticalInput);
-        }
+        
     }
 
     private void FixedUpdate()
@@ -65,10 +64,7 @@ public class PlayerLogic : MonoBehaviour
             m_heigthMovement.y = m_jumpHeight;
             m_jump = false;
         }
-        if (m_cameraLogic && Mathf.Abs(m_horizontalInput) > 0.1f || Mathf.Abs(m_verticalInput) > 0.1f)
-        {
-            transform.forward = m_cameraLogic.GetForwardVector();
-        }
+
         m_heigthMovement.y -= m_gravity * Time.deltaTime;
         m_verticalMovement = transform.forward * m_verticalInput * m_movementSpeed * Time.deltaTime;
         m_horizontalMovment = transform.right * m_horizontalInput * m_movementSpeed * Time.deltaTime;
@@ -80,13 +76,5 @@ public class PlayerLogic : MonoBehaviour
             m_heigthMovement.y = 0f;
         }
     }
-    public void PlayFootstepSound(int footIndex)
-    {
-        if(m_footstepSounds.Count > 0 && m_audioSource)
-        {
-            int randomNum = Random.Range(0, m_footstepSounds.Count -1);
-            m_audioSource.PlayOneShot(m_footstepSounds[randomNum]);
-            Debug.Log("footstep " + footIndex);
-        }
-    }
+  
 }
