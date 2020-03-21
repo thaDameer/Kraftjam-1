@@ -26,7 +26,7 @@ public class MoonGun : MonoBehaviour
     [SerializeField]
     bool buttonUp;
     [SerializeField]
-    float maxShootDistance = 20f;
+    
 
     private void Awake()
     {
@@ -89,7 +89,7 @@ public class MoonGun : MonoBehaviour
         {
             activeMoon = Instantiate(moonPrefab, shootPos.transform.position, transform.rotation);
             var moonRb = activeMoon.GetComponent<Rigidbody>();
-            moonRb.AddForce(transform.forward * 10f, ForceMode.Impulse);
+            moonRb.AddForce(transform.forward * 20f, ForceMode.Impulse);
             CameraScript.instance.CameraShakeZ();
             gunState = GunState.MoonIsMoving;
         }

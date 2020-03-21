@@ -19,10 +19,9 @@ public class MoonScript : MonoBehaviour
     {
         moonCol = GetComponent<Collider>();
         moonRb = GetComponent<Rigidbody>();
-        moonCol.enabled = false;
+       
         player = PlayerLogic.instance.transform;
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Object")
@@ -31,7 +30,7 @@ public class MoonScript : MonoBehaviour
 
             if (objectInRadius != null)
             {
-                objectInRadius.Suck(transform);
+                
                 if (!_objectList.Contains(objectInRadius))
                 {
                     _objectList.Add(objectInRadius);
@@ -45,7 +44,7 @@ public class MoonScript : MonoBehaviour
         if (other.tag == "Object")
         {
             InteractableObjects objectInRadius = other.GetComponent<InteractableObjects>();
-
+            objectInRadius.Suck(transform);
             if (objectInRadius != null)
             {
                 objectInRadius.Suck(transform);
@@ -59,8 +58,9 @@ public class MoonScript : MonoBehaviour
         if (other.tag == "Object")
         {
             InteractableObjects objectInRadius = other.GetComponent<InteractableObjects>();
+            objectInRadius.SwitchOnGravity();
+           // _objectList.Remove(objectInRadius);
 
-            _objectList.Remove(objectInRadius);
 
         }
     }
@@ -79,6 +79,12 @@ public class MoonScript : MonoBehaviour
     
     public void CallBackMoon()
     {
+        var dir = moonGun.transform.position - transform.position;
+        for (int i = 0; i < _objectList.Count; i++)
+        {
+            _objectList[i].SwitchOnGravity();
+        }
+        moonRb.AddForce(dir.normalized * 20f, ForceMode.Impulse);
         StartCoroutine("ReturnMoon");
         StartCoroutine(ReturnMoon());
     }
@@ -91,19 +97,19 @@ public class MoonScript : MonoBehaviour
         {
             
             var distance = Vector3.Distance(transform.position, moonGun.transform.position);
-            var maxDist = 3f;
+            var maxDist = 5f;
             var dir =  moonGun.transform.position - transform.position;
-            Debug.Log(distance);
-            moonRb.AddForce(dir * 5, ForceMode.Acceleration);
+            moonRb.AddForce(dir.normalized * 10, ForceMode.Impulse);
+            yield return new WaitForEndOfFrame();
             if(maxDist > distance)
             {
+                CameraScript.instance.CameraShakeZ();
+                moonRb.velocity = Vector3.zero;
+                moonRb.angularVelocity = Vector3.zero;
                 isReturning = false;
             }
-            yield return new WaitForEndOfFrame();
         }
-        Debug.Log("STOP MOON");
-        moonRb.velocity = Vector3.zero;
-        moonRb.angularVelocity = Vector3.zero;
+        
 
         //PLAY A PARTICLE EFFECT
         moonGun.MoonHasReturned();

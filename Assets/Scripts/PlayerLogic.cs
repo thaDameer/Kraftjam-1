@@ -57,8 +57,8 @@ public class PlayerLogic : MonoBehaviour
 
     void Update()
     {
-        m_horizontalInput = Input.GetAxis("Horizontal");
-        m_verticalInput = Input.GetAxis("Vertical");
+        m_horizontalInput = Input.GetAxisRaw("Horizontal");
+        m_verticalInput = Input.GetAxisRaw("Vertical");
         jumpButtonHeld = Input.GetButton("Jump");
         if (m_characterController.isGrounded)
         {
@@ -74,7 +74,10 @@ public class PlayerLogic : MonoBehaviour
 
                 break;
             case PlayerState.Walking:
-                TurnToWalkingDirection();
+                if(m_horizontalInput != 0 || m_verticalInput != 0)
+                {
+                    TurnToWalkingDirection();
+                }
                 break;
             case PlayerState.Dead:
 
