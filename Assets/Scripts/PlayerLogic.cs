@@ -22,6 +22,8 @@ public class PlayerLogic : MonoBehaviour
     float m_gravity = 0.45f;
     [SerializeField]
     float m_movementSpeed = 5f;
+    [SerializeField]
+    float m_mouseSensitivity; 
 
     Vector3 m_heigthMovement;
     Vector3 m_verticalMovement;
@@ -34,10 +36,15 @@ public class PlayerLogic : MonoBehaviour
     {
         m_horizontalInput = Input.GetAxis("Horizontal");
         m_verticalInput = Input.GetAxis("Vertical");
+
+
+
         switch (playerState)
         {
             case PlayerState.Aiming:
 
+                Aiming();
+                Shoot(); 
 
                 break;
             case PlayerState.Walking:
@@ -53,6 +60,12 @@ public class PlayerLogic : MonoBehaviour
         if(Input.GetButtonDown("Jump") && m_characterController.isGrounded)
         {
             m_jump = true;
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+           
+            SwitchToAiming(); 
         }
         
     }
@@ -76,5 +89,48 @@ public class PlayerLogic : MonoBehaviour
             m_heigthMovement.y = 0f;
         }
     }
+
+    void Aiming()
+    {
+         
+        transform.Rotate(0, Input.GetAxis("Mouse X") * Time.deltaTime * m_mouseSensitivity, 0);
+
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            SwitchToWalking();
+           
+        }
   
+
+    }
+
+    void SwitchToAiming()
+    {
+        m_movementSpeed = m_movementSpeed * 0.2f;
+        playerState = PlayerState.Aiming;
+        Debug.Log("Aiming"); 
+    }
+
+    void SwitchToWalking()
+    {
+        m_movementSpeed = m_movementSpeed / 0.2f;
+        playerState = PlayerState.Walking;
+        Debug.Log("Walking"); 
+    }
+
+    void Shoot()
+    {
+        if (Input.GetMouseButtonDown(0)) //Hold to position of projectile
+        {
+            Debug.Log("PEW");
+        }
+        
+        if (Input.GetMouseButtonUp(0)) // Release to stop 
+        {
+            Debug.Log("STOP"); 
+        }
+    }
+
+
 }
