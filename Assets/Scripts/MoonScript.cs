@@ -4,18 +4,27 @@ using UnityEngine;
 
 public class MoonScript : MonoBehaviour
 {
-    float moveSpeed = 10f;
+
     public MoonGun moonGun;
-    Rigidbody moonRb;
+    public Rigidbody moonRb;
+    Collider moonCol;
 
     private void Start()
     {
-        moveSpeed = moonGun.shootSpeed;
+        moonCol = GetComponent<Collider>();
         moonRb = GetComponent<Rigidbody>();
+        moonCol.enabled = false;
+       
     }
 
-    public void MovingForward()
+    public void MovingForward(float moveSpeed, Vector3 aimDirection)
     {
-        moonRb.velocity = transform.forward * moveSpeed * Time.fixedTime;
+        moonRb.AddForce(aimDirection.normalized * moveSpeed,ForceMode.Acceleration);
+    }
+    public void StopMoving()
+    {
+        moonRb.velocity = Vector3.zero;
+       
+        moonCol.enabled = true;
     }
 }

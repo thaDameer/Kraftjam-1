@@ -42,14 +42,14 @@ public class PlayerLogic : MonoBehaviour
         switch (playerState)
         {
             case PlayerState.Aiming:
+
                 Aiming();
                 Shoot(); 
-                break;
 
+                break;
             case PlayerState.Walking:
 
                 break;
-
             case PlayerState.Dead:
 
                 break;
@@ -79,8 +79,8 @@ public class PlayerLogic : MonoBehaviour
         }
 
         m_heigthMovement.y -= m_gravity * Time.deltaTime;
-        m_verticalMovement = transform.forward * m_verticalInput * m_movementSpeed * Time.deltaTime;
-        m_horizontalMovment = transform.right * m_horizontalInput * m_movementSpeed * Time.deltaTime;
+        m_verticalMovement = Vector3.forward * m_verticalInput * m_movementSpeed * Time.deltaTime;
+        m_horizontalMovment = Vector3.right * m_horizontalInput * m_movementSpeed * Time.deltaTime;
         Vector3 movementVector = m_horizontalMovment + m_verticalMovement + m_horizontalMovment;
         
         m_characterController.Move(m_horizontalMovment + m_verticalMovement + m_heigthMovement);
@@ -92,13 +92,17 @@ public class PlayerLogic : MonoBehaviour
 
     void Aiming()
     {
+         
         transform.Rotate(0, Input.GetAxis("Mouse X") * Time.deltaTime * m_mouseSensitivity, 0);
+
 
         if (Input.GetMouseButtonUp(1))
         {
             SwitchToWalking();
            
         }
+  
+
     }
 
     void SwitchToAiming()
@@ -127,5 +131,6 @@ public class PlayerLogic : MonoBehaviour
             Debug.Log("STOP"); 
         }
     }
+
 
 }

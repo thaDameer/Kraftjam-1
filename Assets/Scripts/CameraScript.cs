@@ -45,15 +45,15 @@ public class CameraScript : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, playerTarget.transform.position, 2 * Time.deltaTime);
     }
 
-    void CameraShakeXY()
+    public void CameraShakeXY()
     {
-        camera.transform.DOShakePosition(duration, strength: strenght, vibrato: 10, fadeOut: true);
+        camera.transform.DOShakePosition(duration, strength: strenght, vibrato: shakeVibrato, fadeOut: true);
     }
-    void CameraShakeZ()
+    public void CameraShakeZ()
     {
         Vector3 zShake = new Vector3(0, 0, -2);
         float shakeTime = 0.5f;
-        camera.transform.DOShakePosition(shakeTime, strength: zShake, vibrato: 10, fadeOut: true);
+        camera.transform.DOShakePosition(shakeTime, strength: zShake, vibrato: shakeVibrato, fadeOut: true);
     }
     
 }
