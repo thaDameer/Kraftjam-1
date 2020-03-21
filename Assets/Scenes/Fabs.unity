@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 1600249967}
-  playerTarget: {fileID: 0}
+  playerTarget: {fileID: 1132671016}
   playerOffset: {x: 0, y: 0, z: 0}
   strenght: {x: 0.5, y: 0, z: 0.5}
   shakeVibrato: 12
@@ -514,6 +514,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!4 &1132671016 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8984762311702638700, guid: a6b1d3b9807e4934f81f285baf283767,
+    type: 3}
+  m_PrefabInstance: {fileID: 2010536048}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1172169027
 GameObject:
   m_ObjectHideFlags: 0

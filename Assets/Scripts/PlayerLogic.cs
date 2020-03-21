@@ -27,7 +27,7 @@ public class PlayerLogic : MonoBehaviour
 
     Vector3 m_heigthMovement;
     Vector3 m_verticalMovement;
-    Vector3 m_horizontalMovment;
+    Vector3 m_horizontalMovement;
     bool m_jump = false;
 
     public CharacterController m_characterController;
@@ -80,10 +80,16 @@ public class PlayerLogic : MonoBehaviour
 
         m_heigthMovement.y -= m_gravity * Time.deltaTime;
         m_verticalMovement = transform.forward * m_verticalInput * m_movementSpeed * Time.deltaTime;
-        m_horizontalMovment = transform.right * m_horizontalInput * m_movementSpeed * Time.deltaTime;
-        Vector3 movementVector = m_horizontalMovment + m_verticalMovement + m_horizontalMovment;
-        
-        m_characterController.Move(m_horizontalMovment + m_verticalMovement + m_heigthMovement);
+        m_horizontalMovement = transform.right * m_horizontalInput * m_movementSpeed * Time.deltaTime;
+
+        Vector3 transformedMovement = transform.TransformDirection(m_horizontalMovement + m_verticalMovement); // horizonal and vertical into relation to world
+
+        Vector3 worldMovement = new Vector3(m_horizontalInput, 0, m_verticalInput) * m_movementSpeed * Time.fixedDeltaTime; 
+
+        Vector3 movementVector = worldMovement + m_heigthMovement;
+
+        m_characterController.Move(movementVector);
+
         if (m_characterController.isGrounded)
         {
             m_heigthMovement.y = 0f;
@@ -97,7 +103,6 @@ public class PlayerLogic : MonoBehaviour
         if (Input.GetMouseButtonUp(1))
         {
             SwitchToWalking();
-           
         }
     }
 
