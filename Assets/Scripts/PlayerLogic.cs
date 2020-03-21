@@ -48,7 +48,7 @@ public class PlayerLogic : MonoBehaviour
 
                 break;
             case PlayerState.Walking:
-
+                TurnToWalkingDirection();
                 break;
             case PlayerState.Dead:
 
@@ -131,6 +131,12 @@ public class PlayerLogic : MonoBehaviour
             Debug.Log("STOP"); 
         }
     }
+    void TurnToWalkingDirection()
+    {
+        transform.rotation = Quaternion.LookRotation(new Vector3(m_horizontalInput, 0, m_verticalInput));
+
+    }
+
 
 
 }
