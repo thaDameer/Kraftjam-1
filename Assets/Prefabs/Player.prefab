@@ -223,4 +223,5 @@ MonoBehaviour:
   playerState: 0
   m_gravity: 0.45
   m_movementSpeed: 5
-  m_characterController: {fileID: 0}
+  m_mouseSensitivity: 500
+  m_characterController: {fileID: 8984762311702638702}
