@@ -2,32 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoonScript : MonoBehaviour
+public class ProvisoryMoonScript : MonoBehaviour
 {
-
     public MoonGun moonGun;
     public Rigidbody moonRb;
     Collider moonCol;
 
     [SerializeField]
-    private List<InteractableObjects> _objectList = new List<InteractableObjects>();
-
+    private List<InteractableObjects> _objectList = new List<InteractableObjects>(); 
 
     private void Start()
     {
         moonCol = GetComponent<Collider>();
         moonRb = GetComponent<Rigidbody>();
         moonCol.enabled = false;
-       
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Object")
+        if(other.tag == "Object")
         {
-            InteractableObjects objectInRadius = other.GetComponent<InteractableObjects>();
+            InteractableObjects objectInRadius = other.GetComponent<InteractableObjects>(); 
 
-            if (objectInRadius != null)
+            if(objectInRadius != null)
             {
                 objectInRadius.Suck(transform);
                 if (!_objectList.Contains(objectInRadius))
@@ -59,18 +57,19 @@ public class MoonScript : MonoBehaviour
             InteractableObjects objectInRadius = other.GetComponent<InteractableObjects>();
 
             _objectList.Remove(objectInRadius);
-
+            
         }
     }
 
+
     public void MovingForward(float moveSpeed, Vector3 aimDirection)
     {
-        moonRb.AddForce(aimDirection.normalized * moveSpeed,ForceMode.Acceleration);
+        moonRb.AddForce(aimDirection.normalized * moveSpeed, ForceMode.Acceleration);
     }
     public void StopMoving()
     {
         moonRb.velocity = Vector3.zero;
-       
+
         moonCol.enabled = true;
     }
 }

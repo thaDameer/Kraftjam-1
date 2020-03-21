@@ -136,7 +136,4 @@ public class PlayerLogic : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(new Vector3(m_horizontalInput, 0, m_verticalInput));
 
     }
-
-
-
 }
