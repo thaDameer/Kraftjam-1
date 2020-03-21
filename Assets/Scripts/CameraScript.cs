@@ -31,7 +31,7 @@ public class CameraScript : MonoBehaviour
     }
 
 
-    void Update()
+    void LateUpdate()
     {
         // followVector = new )
         if (Input.GetKeyDown(KeyCode.P))

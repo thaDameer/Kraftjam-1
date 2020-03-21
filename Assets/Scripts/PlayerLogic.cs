@@ -12,32 +12,58 @@ public class PlayerLogic : MonoBehaviour
         Dead
     }
     public PlayerState playerState;
-
+    public static PlayerLogic instance;
+    public MoonGun moonGun;
     float m_horizontalInput;
     float m_verticalInput;
 
     Vector3 m_movementInput;
+    [SerializeField]
     float m_jumpHeight = 0.4f;
     [SerializeField]
     float m_gravity = 0.45f;
+    float storedGravity;
+    [SerializeField]
+    float fallGravity = 1.4f;
     [SerializeField]
     float m_movementSpeed = 5f;
     [SerializeField]
-    float m_mouseSensitivity; 
+    float m_mouseSensitivity = 500; 
 
     Vector3 m_heigthMovement;
     Vector3 m_verticalMovement;
     Vector3 m_horizontalMovment;
+
     bool m_jump = false;
+    [SerializeField]
+    float jumpTime = 0.5f;
+    float jumpTimeCounter;
+    bool jumpButtonHeld;
 
     public CharacterController m_characterController;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
+
+    private void Start()
+    {
+        storedGravity = m_gravity;
+    }
 
     void Update()
     {
         m_horizontalInput = Input.GetAxis("Horizontal");
         m_verticalInput = Input.GetAxis("Vertical");
-
-
+        jumpButtonHeld = Input.GetButton("Jump");
+        if (m_characterController.isGrounded)
+        {
+            m_gravity = storedGravity;
+        }
 
         switch (playerState)
         {
@@ -59,6 +85,7 @@ public class PlayerLogic : MonoBehaviour
 
         if(Input.GetButtonDown("Jump") && m_characterController.isGrounded)
         {
+            jumpTimeCounter = jumpTime;
             m_jump = true;
         }
 
@@ -72,10 +99,21 @@ public class PlayerLogic : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (m_jump)
+        if (jumpTimeCounter > 0 && jumpButtonHeld)
         {
-            m_heigthMovement.y = m_jumpHeight;
+            if (m_jump)
+            {
+                m_heigthMovement.y = m_jumpHeight ;
+            }
+            jumpTimeCounter -= Time.fixedDeltaTime;
+        }
+        else
+        {
             m_jump = false;
+        }
+        if(m_characterController.velocity.y < 0)
+        {
+            m_gravity = fallGravity;
         }
 
         m_heigthMovement.y -= m_gravity * Time.deltaTime;
@@ -128,7 +166,7 @@ public class PlayerLogic : MonoBehaviour
         
         if (Input.GetMouseButtonUp(0)) // Release to stop 
         {
-            Debug.Log("STOP"); 
+           
         }
     }
     void TurnToWalkingDirection()

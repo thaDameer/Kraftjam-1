@@ -25,6 +25,8 @@ public class MoonGun : MonoBehaviour
     bool hasShot;
     [SerializeField]
     bool buttonUp;
+    [SerializeField]
+    float maxShootDistance = 20f;
 
     private void Awake()
     {
@@ -47,12 +49,15 @@ public class MoonGun : MonoBehaviour
             case GunState.MoonIsMoving:
                 if (buttonUp)
                 {
-                    activeMoon.StopMoving();
+                    activeMoon.StopMoving(this);
                     gunState = GunState.MoonCanBeCalledBack;
                 }
                 break;
             case GunState.MoonCanBeCalledBack:
-
+                if (Input.GetKeyDown(KeyCode.C) && activeMoon)
+                {
+                    activeMoon.CallBackMoon();
+                }
                 break;
         }
         
@@ -89,4 +94,12 @@ public class MoonGun : MonoBehaviour
             gunState = GunState.MoonIsMoving;
         }
     }
+
+    public void MoonHasReturned()
+    {
+        //moon has retured and you can now shoot again
+        //MAYBE play a litte particle effect?
+        gunState = GunState.CanShoot;
+    }
+    
 }
