@@ -47,7 +47,7 @@ public class PlayerLogic : MonoBehaviour
                 break;
 
             case PlayerState.Walking:
-
+                TurnToWalkingDirection(); 
                 break;
 
             case PlayerState.Dead:
@@ -79,10 +79,6 @@ public class PlayerLogic : MonoBehaviour
         }
 
         m_heigthMovement.y -= m_gravity * Time.deltaTime;
-        m_verticalMovement = transform.forward * m_verticalInput * m_movementSpeed * Time.deltaTime;
-        m_horizontalMovement = transform.right * m_horizontalInput * m_movementSpeed * Time.deltaTime;
-
-        Vector3 transformedMovement = transform.TransformDirection(m_horizontalMovement + m_verticalMovement); // horizonal and vertical into relation to world
 
         Vector3 worldMovement = new Vector3(m_horizontalInput, 0, m_verticalInput) * m_movementSpeed * Time.fixedDeltaTime; 
 
@@ -131,6 +127,12 @@ public class PlayerLogic : MonoBehaviour
         {
             Debug.Log("STOP"); 
         }
+    }
+
+    void TurnToWalkingDirection()
+    {
+        transform.rotation = Quaternion.LookRotation( new Vector3(m_horizontalInput, 0, m_verticalInput)); 
+        
     }
 
 }
