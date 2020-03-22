@@ -38,6 +38,7 @@ public class OrbitSpots : MonoBehaviour
     {
         _objectList.Add(stuff);
         _objectList[_amountOfObjects].transform.position = orbitSpots[_amountOfObjects].transform.position;
+        orbitSpots[_amountOfObjects].GetComponentInChildren<ParticleSystem>().Emit(10);
         _objectList[_amountOfObjects].transform.parent = orbitSpots[_amountOfObjects].transform;
 
         _amountOfObjects++;

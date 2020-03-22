@@ -43,12 +43,13 @@ public class MoonScript : MonoBehaviour
         this.moonGun = moonGun;
         moonRb.velocity = Vector3.zero;
        
-        moonCol.enabled = true;
+        moonCol.enabled = false;
     }
     
     public void CallBackMoon()
     {
         //RELEASE ALL THE OBJECTS IN ORBIT
+        GetComponent<SphereCollider>().enabled = false;
         orbitSpots.ReleaseAllObjects();
 
             //var dir = moonGun.transform.position - transform.position;
@@ -62,18 +63,17 @@ public class MoonScript : MonoBehaviour
     IEnumerator ReturnMoon()
     {
         bool isReturning = true;
-
-        
-
-        while(isReturning)
+        moonRb.constraints = RigidbodyConstraints.None;
+        while (isReturning)
         {
-            GetComponent<SphereCollider>().enabled = false; 
+            
 
 
             var distance = Vector3.Distance(transform.position, moonGun.transform.position);
-            var maxDist = 5f;
+            var maxDist = 2f;
             var dir =  moonGun.transform.position - transform.position;
-            moonRb.AddForce(dir.normalized * 10, ForceMode.Impulse);
+            moonRb.velocity += dir.normalized * 5 * Time.fixedDeltaTime;
+            //moonRb.AddForce(dir.normalized * 15, ForceMode.Acceleration);
             yield return new WaitForEndOfFrame();
             if(maxDist > distance)
             {
@@ -89,6 +89,9 @@ public class MoonScript : MonoBehaviour
         //PLAY A PARTICLE EFFECT
         moonGun.MoonHasReturned();
         player.GetComponent<PlayerLogic>().MoonHasReturned();
-        Destroy(gameObject);
+       
+            Destroy(gameObject);
+
+        
     }
 }

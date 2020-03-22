@@ -44,6 +44,7 @@ public class PlayerLogic : MonoBehaviour
     bool hasShot = false;
 
     public CharacterController m_characterController;
+    private Rigidbody playerRb;
 
     private void Awake()
     {
@@ -56,6 +57,7 @@ public class PlayerLogic : MonoBehaviour
     private void Start()
     {
         storedGravity = m_gravity;
+        playerRb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -107,33 +109,10 @@ public class PlayerLogic : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (jumpTimeCounter > 0 && jumpButtonHeld)
-        {
-            if (m_jump)
-            {
-                m_heigthMovement.y = m_jumpHeight ;
-            }
-            jumpTimeCounter -= Time.fixedDeltaTime;
-        }
-        else
-        {
-            m_jump = false;
-        }
-        if(m_characterController.velocity.y < 0)
-        {
-            m_gravity = fallGravity;
-        }
+        Vector3 movementVector = new Vector3(m_horizontalInput, 0, m_verticalInput).normalized * m_movementSpeed * Time.deltaTime;
 
-        m_heigthMovement.y -= m_gravity * Time.deltaTime;
-        m_verticalMovement = Vector3.forward * m_verticalInput * m_movementSpeed * Time.deltaTime;
-        m_horizontalMovment = Vector3.right * m_horizontalInput * m_movementSpeed * Time.deltaTime;
-        Vector3 movementVector = m_horizontalMovment + m_verticalMovement + m_horizontalMovment;
+        playerRb.MovePosition(transform.position + movementVector );
         
-        m_characterController.Move(m_horizontalMovment + m_verticalMovement + m_heigthMovement);
-        if (m_characterController.isGrounded)
-        {
-            m_heigthMovement.y = 0f;
-        }
     }
     float AngleBetweenTwoPoints(Vector3 a, Vector3 b)
     {
@@ -197,7 +176,11 @@ public class PlayerLogic : MonoBehaviour
 
     void TurnToWalkingDirection()
     {
-        transform.rotation = Quaternion.LookRotation(new Vector3(m_horizontalInput, 0, m_verticalInput));
+        if (!aimButtonHeld)
+        {
+            var rot = Quaternion.LookRotation(new Vector3(m_horizontalInput, 0, m_verticalInput));
+            transform.rotation = Quaternion.Slerp(transform.rotation, rot, 15 * Time.deltaTime);
+        }
 
     }
 }

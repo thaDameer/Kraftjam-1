@@ -30,7 +30,7 @@ public class ProvisoryMoonScript : MonoBehaviour
                 objectInRadius.Suck(transform);
                 if (!_objectList.Contains(objectInRadius))
                 {
-                    _objectList.Add(objectInRadius);
+                   // _objectList.Add(objectInRadius);
                 }
             }
         }
