@@ -39,6 +39,7 @@ public class PlayerLogic : MonoBehaviour
     float jumpTime = 0.5f;
     float jumpTimeCounter;
     bool jumpButtonHeld;
+    bool aimButtonUp;
 
     public CharacterController m_characterController;
 
@@ -60,6 +61,7 @@ public class PlayerLogic : MonoBehaviour
         m_horizontalInput = Input.GetAxisRaw("Horizontal");
         m_verticalInput = Input.GetAxisRaw("Vertical");
         jumpButtonHeld = Input.GetButton("Jump");
+        aimButtonUp = Input.GetMouseButtonUp(1);
         if (m_characterController.isGrounded)
         {
             m_gravity = storedGravity;
@@ -94,7 +96,6 @@ public class PlayerLogic : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-           
             SwitchToAiming(); 
         }
         
@@ -130,13 +131,33 @@ public class PlayerLogic : MonoBehaviour
             m_heigthMovement.y = 0f;
         }
     }
+    float AngleBetweenTwoPoints(Vector3 a, Vector3 b)
+    {
+        return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
+    }
 
     void Aiming()
     {
-         
+        if (aimButtonUp)
+        {
+            SwitchToWalking();
+        }
+
+        Ray ray = CameraScript.instance.camera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if(Physics.Raycast(ray, out hit,Mathf.Infinity))
+        {
+            var hitPos = hit.point;
+            var targetRotation = Quaternion.LookRotation(hitPos - transform.position);
+            targetRotation.x = 0;
+            targetRotation.z = 0;
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20f * Time.deltaTime);
+        }
+
+        //OLD ROTATION MOVEMENT
+
         //transform.Rotate(0, Input.GetAxis("Mouse X") * Time.deltaTime * m_mouseSensitivity, 0);
-
-
         //if (Input.GetMouseButtonUp(1))
         //{
         //    SwitchToWalking();
