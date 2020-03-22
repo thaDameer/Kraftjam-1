@@ -6,7 +6,7 @@ public class InteractableObjects : MonoBehaviour
 {
     public enum ObjectState
     {
-        STATIC, 
+        NORMALSTATE, 
         SUCKING, 
         ORBIT
     }
@@ -25,7 +25,7 @@ public class InteractableObjects : MonoBehaviour
 
     private void Awake()
     {
-        objectState = ObjectState.STATIC;
+        objectState = ObjectState.NORMALSTATE;
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.useGravity = true;
     }
@@ -35,7 +35,7 @@ public class InteractableObjects : MonoBehaviour
 
         switch (objectState)
         {
-            case ObjectState.STATIC:
+            case ObjectState.NORMALSTATE:
 
                 break;
 
@@ -46,6 +46,7 @@ public class InteractableObjects : MonoBehaviour
                     float orbitDist = Vector3.Distance(transform.position, this.moon.position);
                     if (orbitDist <= _orbitDistanceMax)
                     {
+                        // CALL ON THE ORBIT SPOT SCRIPT!!
                         objectState = ObjectState.ORBIT;
                     }
                     else
@@ -61,7 +62,7 @@ public class InteractableObjects : MonoBehaviour
                 else
                 {
                     SwitchOnGravity();
-                    objectState = ObjectState.STATIC;
+                    objectState = ObjectState.NORMALSTATE;
                 }
                 break;
 
