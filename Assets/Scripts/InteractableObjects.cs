@@ -48,9 +48,6 @@ public class InteractableObjects : MonoBehaviour
                 {
                     float orbitDist = Vector3.Distance(transform.position, this.moon.position);
 
-                    
-
-
                     if(orbitDist <= _orbitDistanceMax)
                     {
                         objectState = ObjectState.ORBIT;
@@ -61,7 +58,6 @@ public class InteractableObjects : MonoBehaviour
                         var dir = moon.transform.position - transform.position;
                         transform.position = Vector3.MoveTowards(transform.position, moonPosition, 30 * Time.deltaTime);
                     }
-
                 }
                 else
                 {
@@ -70,7 +66,6 @@ public class InteractableObjects : MonoBehaviour
                     inMoonRange = false; 
                 }
                 break;
-
             case ObjectState.ORBIT:
 
                 if (this.moon)
@@ -84,7 +79,6 @@ public class InteractableObjects : MonoBehaviour
                         
                         added = true;
                     }
-
                 }
                 break; 
         }
@@ -129,6 +123,8 @@ public class InteractableObjects : MonoBehaviour
     public void SetNormalState()
     {
         objectState = ObjectState.NORMALSTATE;
+        inMoonRange = false;
+        added = false;
         SwitchOnGravity(true);
     }
 
