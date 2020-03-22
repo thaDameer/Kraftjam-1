@@ -40,7 +40,7 @@ public class MoonGun : MonoBehaviour
         switch (gunState)
         {
             case GunState.CanShoot:
-                if (Input.GetButtonDown("Fire1"))
+                if (Input.GetButtonDown("Fire1") && playerLogic.playerState == PlayerLogic.PlayerState.Aiming)
                 {
                     ShootMoon();
                 }

@@ -134,14 +134,14 @@ public class PlayerLogic : MonoBehaviour
     void Aiming()
     {
          
-        transform.Rotate(0, Input.GetAxis("Mouse X") * Time.deltaTime * m_mouseSensitivity, 0);
+        //transform.Rotate(0, Input.GetAxis("Mouse X") * Time.deltaTime * m_mouseSensitivity, 0);
 
 
-        if (Input.GetMouseButtonUp(1))
-        {
-            SwitchToWalking();
+        //if (Input.GetMouseButtonUp(1))
+        //{
+        //    SwitchToWalking();
            
-        }
+        //}
   
 
     }

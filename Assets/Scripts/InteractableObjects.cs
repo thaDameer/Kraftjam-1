@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class InteractableObjects : MonoBehaviour
 {
-
-
     public enum ObjectState
     {
         STATIC, 
@@ -48,17 +46,13 @@ public class InteractableObjects : MonoBehaviour
                     float orbitDist = Vector3.Distance(transform.position, this.moon.position);
                     if (orbitDist <= _orbitDistanceMax)
                     {
-                        if (this.moon)
-                        {
-                            Orbit(this.moon);
-                            objectState = ObjectState.ORBIT;
-                        }
+                        objectState = ObjectState.ORBIT;
                     }
                     else
                     {
                         moonPosition = this.moon.position;
                         var dir = moon.transform.position - transform.position;
-                        transform.position = Vector3.MoveTowards(transform.position, moonPosition, 10 * Time.deltaTime);
+                        transform.position = Vector3.MoveTowards(transform.position, moonPosition, 30 * Time.deltaTime);
                         dir.y = moon.transform.position.y;
                         //transform.position = Vector3.Lerp(transform.position, dir, suckSpeed * Time.deltaTime);
                         // transform.position = new Vector3(transform.position.x, moon.position.y, transform.position.z);
@@ -72,9 +66,15 @@ public class InteractableObjects : MonoBehaviour
                 break;
 
             case ObjectState.ORBIT:
-                 
-                break; 
 
+                if (this.moon)
+                {
+                    if (this.moon)
+                    {
+                        Orbit(this.moon); 
+                   }
+                }
+                break; 
         }
     }
 
@@ -85,7 +85,6 @@ public class InteractableObjects : MonoBehaviour
         rigidbody.mass = 5f;
         rigidbody.angularDrag = 4f;
         rigidbody.useGravity = false;
-        //rigidbody.isKinematic = true;
         objectState = ObjectState.SUCKING;
     }
 
@@ -122,16 +121,15 @@ public class InteractableObjects : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Object" && this.moon)
+        if (collision.gameObject.tag == "Object" && objectState == ObjectState.SUCKING)
         {
-            rigidbody.velocity = Vector3.zero;
-            rigidbody.angularVelocity = Vector3.zero;
-            Debug.Log("HIT");
-            moonPosition.y += 1f ;
+            InteractableObjects interactebleObj = GetComponent<InteractableObjects>();
+            if (interactebleObj && interactebleObj.objectState == ObjectState.ORBIT)
+            {
+                objectState = ObjectState.ORBIT;
+            }
         }
     }
-
-
 }
