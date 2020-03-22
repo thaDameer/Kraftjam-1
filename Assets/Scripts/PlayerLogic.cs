@@ -40,6 +40,8 @@ public class PlayerLogic : MonoBehaviour
     float jumpTimeCounter;
     bool jumpButtonHeld;
     bool aimButtonUp;
+    bool aimButtonHeld;
+    bool hasShot = false;
 
     public CharacterController m_characterController;
 
@@ -62,6 +64,7 @@ public class PlayerLogic : MonoBehaviour
         m_verticalInput = Input.GetAxisRaw("Vertical");
         jumpButtonHeld = Input.GetButton("Jump");
         aimButtonUp = Input.GetMouseButtonUp(1);
+        aimButtonHeld = Input.GetMouseButton(1);
         if (m_characterController.isGrounded)
         {
             m_gravity = storedGravity;
@@ -70,10 +73,11 @@ public class PlayerLogic : MonoBehaviour
         switch (playerState)
         {
             case PlayerState.Aiming:
-
+                if (Input.GetMouseButtonDown(0))
+                {
+                    hasShot = true;
+                }
                 Aiming();
-                Shoot(); 
-
                 break;
             case PlayerState.Walking:
                 if(m_horizontalInput != 0 || m_verticalInput != 0)
@@ -141,19 +145,27 @@ public class PlayerLogic : MonoBehaviour
         if (aimButtonUp)
         {
             SwitchToWalking();
+            return;
         }
-
-        Ray ray = CameraScript.instance.camera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if(Physics.Raycast(ray, out hit,Mathf.Infinity))
+        if (!hasShot)
         {
-            var hitPos = hit.point;
-            var targetRotation = Quaternion.LookRotation(hitPos - transform.position);
-            targetRotation.x = 0;
-            targetRotation.z = 0;
+            Ray ray = CameraScript.instance.camera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if(Physics.Raycast(ray, out hit,Mathf.Infinity))
+            {
+                var hitPos = hit.point;
+                var targetRotation = Quaternion.LookRotation(hitPos - transform.position);
+                targetRotation.x = 0;
+                targetRotation.z = 0;
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20f * Time.deltaTime);
+                transform.rotation = targetRotation;// Quaternion.Slerp(transform.rotation, targetRotation,10);
+            }
+
         }
+        //else
+        //{
+        //    transform.rotation = Quaternion.Euler(transform.eulerAngles);
+        //}
 
         //OLD ROTATION MOVEMENT
 
@@ -166,33 +178,23 @@ public class PlayerLogic : MonoBehaviour
   
 
     }
+    public void MoonHasReturned()
+    {
+        hasShot = false;
+    }
 
     void SwitchToAiming()
     {
         m_movementSpeed = m_movementSpeed * 0.2f;
         playerState = PlayerState.Aiming;
-        Debug.Log("Aiming"); 
     }
 
     void SwitchToWalking()
     {
         m_movementSpeed = m_movementSpeed / 0.2f;
         playerState = PlayerState.Walking;
-        Debug.Log("Walking"); 
     }
 
-    void Shoot()
-    {
-        if (Input.GetMouseButtonDown(0)) //Hold to position of projectile
-        {
-            Debug.Log("PEW");
-        }
-        
-        if (Input.GetMouseButtonUp(0)) // Release to stop 
-        {
-           
-        }
-    }
     void TurnToWalkingDirection()
     {
         transform.rotation = Quaternion.LookRotation(new Vector3(m_horizontalInput, 0, m_verticalInput));

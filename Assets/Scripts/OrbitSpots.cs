@@ -8,14 +8,15 @@ public class OrbitSpots : MonoBehaviour
 
     [SerializeField]
     private List<InteractableObjects> _objectList = new List<InteractableObjects>(); 
-
+    [SerializeField]
     private int _amountOfObjects = 0;
 
     [SerializeField]
     private float scale = 5; 
 
     [SerializeField]
-    private float _rotateSpeed = 30; 
+    private float _rotateSpeed = 30;
+    
     void Start()
     {
         for (int i = 0; i < orbitSpots.Length; i++)
@@ -35,7 +36,6 @@ public class OrbitSpots : MonoBehaviour
     public void AddObjects(InteractableObjects stuff)
     {
         _objectList.Add(stuff);
-
         _objectList[_amountOfObjects].transform.position = orbitSpots[_amountOfObjects].transform.position;
         _objectList[_amountOfObjects].transform.parent = orbitSpots[_amountOfObjects].transform;
 
@@ -44,16 +44,33 @@ public class OrbitSpots : MonoBehaviour
         Debug.Log("Added stuff supposedly");
     }
 
-    void RemoveAllObjects()
+    public void ReleaseAllObjects()
     {
-        for (int i = _amountOfObjects; i >= 0; i--)
+        transform.gameObject.SetActive(true);
+        StopCoroutine("ReleaseAllObjects_CR");
+        //StartCoroutine(ReleaseAllObjects_CR());
+        foreach (InteractableObjects obj in _objectList)
         {
-            _objectList[i].transform.parent = null;
-            _objectList.RemoveAt(i);
+            obj.transform.parent = null;
+            obj.SetNormalState();
             _amountOfObjects--;
-
-            Debug.Log("Removed element " + i);
+            
         }
+    }
+
+    IEnumerator ReleaseAllObjects_CR()
+    {
+        Debug.Log("START CR");
+        for (int i = 0; i < orbitSpots.Length; i++)
+        {
+            InteractableObjects obj = orbitSpots[i].GetComponentInChildren<InteractableObjects>();
+            if (obj)
+            {
+                obj.transform.parent = null;
+                obj.SwitchOnGravity(true);
+            }
+        } 
+        yield return new WaitForSeconds(2);
     }
 
 }

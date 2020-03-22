@@ -13,10 +13,6 @@ public class MoonScript : MonoBehaviour
 
     public OrbitSpots orbitSpots; 
 
-    [SerializeField]
-    private List<InteractableObjects> _objectList = new List<InteractableObjects>();
-
-
     private void Start()
     {
         moonCol = GetComponent<Collider>();
@@ -33,13 +29,6 @@ public class MoonScript : MonoBehaviour
             if (objectInRadius != null && !objectInRadius.inMoonRange)
             {
                 objectInRadius.Suck(transform);
-
-                Debug.Log("Entered Trigger"); 
-
-                if (!_objectList.Contains(objectInRadius))
-                {
-                    _objectList.Add(objectInRadius);
-                }
             }
         }
     }
@@ -51,10 +40,7 @@ public class MoonScript : MonoBehaviour
         if (other.tag == "Object")
         {
             InteractableObjects objectInRadius = other.GetComponent<InteractableObjects>();
-            objectInRadius.SetNormalState();  
-            _objectList.Remove(objectInRadius);
-
-
+            objectInRadius.SwitchOnGravity(true);
         }
     }
 
@@ -72,11 +58,10 @@ public class MoonScript : MonoBehaviour
     
     public void CallBackMoon()
     {
+        //RELEASE ALL THE OBJECTS IN ORBIT
+        orbitSpots.ReleaseAllObjects();
+
         var dir = moonGun.transform.position - transform.position;
-        //for (int i = 0; i < _objectList.Count; i++)
-        //{
-        //    _objectList[i].SwitchOnGravity(true);
-        //}
         moonRb.AddForce(dir.normalized * 20f, ForceMode.Impulse);
         StartCoroutine("ReturnMoon");
         StartCoroutine(ReturnMoon());
@@ -106,6 +91,7 @@ public class MoonScript : MonoBehaviour
 
         //PLAY A PARTICLE EFFECT
         moonGun.MoonHasReturned();
+        player.GetComponent<PlayerLogic>().MoonHasReturned();
         Destroy(gameObject);
     }
 }
