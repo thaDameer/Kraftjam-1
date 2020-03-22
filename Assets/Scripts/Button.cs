@@ -11,7 +11,7 @@ public class Button : MonoBehaviour
     [SerializeField]
     private bool _isOpen = false;
     [SerializeField]
-    private Door door; 
+    private Door door;
 
     private void Awake()
     {

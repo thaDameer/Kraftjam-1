@@ -11,6 +11,8 @@ public class MoonScript : MonoBehaviour
     Transform player;
     float maxShootDist = 20f;
 
+    public OrbitSpots orbitSpots; 
+
     [SerializeField]
     private List<InteractableObjects> _objectList = new List<InteractableObjects>();
 
