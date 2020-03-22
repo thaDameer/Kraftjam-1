@@ -39,6 +39,7 @@ public class InteractableObjects : MonoBehaviour
         switch (objectState)
         {
             case ObjectState.NORMALSTATE:
+                SwitchOnGravity(true);
 
                 break;
 
@@ -64,7 +65,7 @@ public class InteractableObjects : MonoBehaviour
                 }
                 else
                 {
-                    //SwitchOnGravity(true);
+                    
                     objectState = ObjectState.NORMALSTATE;
                     inMoonRange = false; 
                 }
@@ -94,10 +95,7 @@ public class InteractableObjects : MonoBehaviour
     {
         
         this.moon = moon;
-        rigidbody.mass = 5f;
-        rigidbody.angularDrag = 4f;
-        rigidbody.useGravity = false;
-        rigidbody.isKinematic = true; 
+        SwitchOnGravity(true); 
         objectState = ObjectState.SUCKING;
 
         inMoonRange = true; 
@@ -126,6 +124,11 @@ public class InteractableObjects : MonoBehaviour
             rigidbody.useGravity = false;
             rigidbody.velocity = Vector3.zero;
         }
+    }
+
+    public void SetNormalState()
+    {
+        objectState = ObjectState.NORMALSTATE;
     }
 
 }

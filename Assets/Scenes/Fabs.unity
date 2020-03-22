@@ -360,8 +360,8 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -382,6 +382,7 @@ MonoBehaviour:
   _orbitSpeed: 20
   suckSpeed: 1
   moon: {fileID: 0}
+  inMoonRange: 0
 --- !u!65 &655225226
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -627,7 +628,7 @@ PrefabInstance:
         type: 3}
       propertyPath: orbitSpots
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1614968758}
     - target: {fileID: 8426409960670994346, guid: ff28f9dcdbe56a94e8105f0826a198f7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -641,7 +642,7 @@ PrefabInstance:
     - target: {fileID: 8426409960670994346, guid: ff28f9dcdbe56a94e8105f0826a198f7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 25.72
+      value: 26.54
       objectReference: {fileID: 0}
     - target: {fileID: 8426409960670994346, guid: ff28f9dcdbe56a94e8105f0826a198f7,
         type: 3}
@@ -1034,6 +1035,7 @@ MonoBehaviour:
   _orbitSpeed: 20
   suckSpeed: 1
   moon: {fileID: 0}
+  inMoonRange: 0
 --- !u!65 &1465998791
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1178,6 +1180,7 @@ MonoBehaviour:
   _orbitSpeed: 20
   suckSpeed: 1
   moon: {fileID: 0}
+  inMoonRange: 0
 --- !u!65 &1591761028
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1335,6 +1338,18 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1614968758 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4273075458995891271, guid: ff28f9dcdbe56a94e8105f0826a198f7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1011286734}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06130088af370d647ba020a2b9ba9306, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1764421237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1587,6 +1602,7 @@ MonoBehaviour:
   _orbitSpeed: 20
   suckSpeed: 1
   moon: {fileID: 0}
+  inMoonRange: 0
 --- !u!65 &2039548191
 BoxCollider:
   m_ObjectHideFlags: 0

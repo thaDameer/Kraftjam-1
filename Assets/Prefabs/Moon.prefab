@@ -207,7 +207,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moonGun: {fileID: 0}
   moonRb: {fileID: 0}
-  orbitSpots: {fileID: 0}
+  orbitSpots: {fileID: 3416098647091060379, guid: 614964f92cf21274d8718ef2c767a02c,
+    type: 3}
   _objectList: []
 --- !u!96 &482432182
 TrailRenderer:

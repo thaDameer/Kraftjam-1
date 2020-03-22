@@ -51,7 +51,7 @@ public class MoonScript : MonoBehaviour
         if (other.tag == "Object")
         {
             InteractableObjects objectInRadius = other.GetComponent<InteractableObjects>();
-            objectInRadius.SwitchOnGravity(true);
+            objectInRadius.SetNormalState();  
             _objectList.Remove(objectInRadius);
 
 
