@@ -113,7 +113,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 746926813050859505}
-  - {fileID: 5037901239885821116}
+  - {fileID: 6516385791560532718}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -207,6 +207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moonGun: {fileID: 0}
   moonRb: {fileID: 0}
+  orbitSpots: {fileID: 0}
   _objectList: []
 --- !u!96 &482432182
 TrailRenderer:
@@ -314,7 +315,7 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!1001 &838103587800679566
+--- !u!1001 &1451681782124360412
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -325,11 +326,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: OrbitSpots
-      objectReference: {fileID: 0}
-    - target: {fileID: 3416098647091060379, guid: 614964f92cf21274d8718ef2c767a02c,
-        type: 3}
-      propertyPath: _rotateSpeed
-      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5641799468320026674, guid: 614964f92cf21274d8718ef2c767a02c,
         type: 3}
@@ -386,21 +382,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5641799468320026674, guid: 614964f92cf21274d8718ef2c767a02c,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5641799468320026674, guid: 614964f92cf21274d8718ef2c767a02c,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 614964f92cf21274d8718ef2c767a02c, type: 3}
---- !u!4 &5037901239885821116 stripped
+--- !u!4 &6516385791560532718 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5641799468320026674, guid: 614964f92cf21274d8718ef2c767a02c,
     type: 3}
-  m_PrefabInstance: {fileID: 838103587800679566}
+  m_PrefabInstance: {fileID: 1451681782124360412}
   m_PrefabAsset: {fileID: 0}

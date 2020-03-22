@@ -13,7 +13,7 @@ public class InteractableObjects : MonoBehaviour
     public ObjectState objectState;
 
     [SerializeField]
-    private float _orbitDistanceMax = 4.0f;
+    private float _orbitDistanceMax = 2;
     [SerializeField]
     private float _orbitSpeed = 20;
     [SerializeField]
@@ -22,6 +22,8 @@ public class InteractableObjects : MonoBehaviour
     [SerializeField]
     Transform moon;
     Vector3 moonPosition;
+
+    private bool added = false; 
 
     private void Awake()
     {
@@ -44,24 +46,24 @@ public class InteractableObjects : MonoBehaviour
                 {
                     CheckForOtherObjects();
                     float orbitDist = Vector3.Distance(transform.position, this.moon.position);
-                    if (orbitDist <= _orbitDistanceMax)
+
+                    moonPosition = this.moon.position;
+                    var dir = moon.transform.position - transform.position;
+                    transform.position = Vector3.MoveTowards(transform.position, moonPosition, 30 * Time.deltaTime);
+
+
+                    if(orbitDist <= _orbitDistanceMax)
                     {
-                        // CALL ON THE ORBIT SPOT SCRIPT!!
-                        objectState = ObjectState.ORBIT;
+
+                            objectState = ObjectState.ORBIT;
+                             
+                       
                     }
-                    else
-                    {
-                        moonPosition = this.moon.position;
-                        var dir = moon.transform.position - transform.position;
-                        transform.position = Vector3.MoveTowards(transform.position, moonPosition, 30 * Time.deltaTime);
-                        dir.y = moon.transform.position.y;
-                        //transform.position = Vector3.Lerp(transform.position, dir, suckSpeed * Time.deltaTime);
-                        // transform.position = new Vector3(transform.position.x, moon.position.y, transform.position.z);
-                    }
+
                 }
                 else
                 {
-                    SwitchOnGravity();
+                    SwitchOnGravity(true);
                     objectState = ObjectState.NORMALSTATE;
                 }
                 break;
@@ -70,10 +72,14 @@ public class InteractableObjects : MonoBehaviour
 
                 if (this.moon)
                 {
-                    if (this.moon)
+                    if (!added)
                     {
-                        Orbit(this.moon); 
-                   }
+                        OrbitSpots orbit = moon.gameObject.GetComponentInChildren<OrbitSpots>();
+                        orbit.AddObjects(this);
+                        SwitchOnGravity(false);
+                        added = true;
+                    }
+
                 }
                 break; 
         }
@@ -96,14 +102,26 @@ public class InteractableObjects : MonoBehaviour
         transform.RotateAround(moonPosition, moon.up, _orbitSpeed * Time.deltaTime); 
     }
 
-    public void SwitchOnGravity()
+    public void SwitchOnGravity(bool on)
     {
-        rigidbody.mass = 1f;
-        rigidbody.angularDrag = 0;
-        rigidbody.isKinematic = false;
-        rigidbody.useGravity = true;
-        rigidbody.velocity = Vector3.zero;
+        if (on)
+        {
+            rigidbody.mass = 1f;
+            rigidbody.angularDrag = 0;
+            rigidbody.isKinematic = false;
+            rigidbody.useGravity = true;
+            rigidbody.velocity = Vector3.zero;
+        }
+        if (!on)
+        {
+            rigidbody.mass = 0;
+            rigidbody.angularDrag = 0;
+            rigidbody.isKinematic = true;
+            rigidbody.useGravity = false;
+            rigidbody.velocity = Vector3.zero;
+        }
     }
+       
 
     void CheckForOtherObjects()
     {
@@ -116,7 +134,7 @@ public class InteractableObjects : MonoBehaviour
                 if(hitColliders[i].tag == "Object")
                 {
                     moonPosition.y += 0.5f;
-                    Debug.Log(moonPosition.y);
+
                 }
             }
         }
