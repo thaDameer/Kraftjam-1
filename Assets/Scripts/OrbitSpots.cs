@@ -44,11 +44,16 @@ public class OrbitSpots : MonoBehaviour
         Debug.Log("Added stuff supposedly");
     }
 
-    void RemoveObjects()
+    void RemoveAllObjects()
     {
-        _objectList.RemoveAt(_amountOfObjects);
+        for (int i = _amountOfObjects; i >= 0; i--)
+        {
+            _objectList[i].transform.parent = null;
+            _objectList.RemoveAt(i);
+            _amountOfObjects--;
 
-        _amountOfObjects--; 
+            Debug.Log("Removed element " + i);
+        }
     }
 
 }

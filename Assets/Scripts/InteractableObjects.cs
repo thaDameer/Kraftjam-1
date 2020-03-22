@@ -44,7 +44,6 @@ public class InteractableObjects : MonoBehaviour
             case ObjectState.SUCKING:
                 if (this.moon)
                 {
-                    CheckForOtherObjects();
                     float orbitDist = Vector3.Distance(transform.position, this.moon.position);
 
                     moonPosition = this.moon.position;
@@ -54,16 +53,13 @@ public class InteractableObjects : MonoBehaviour
 
                     if(orbitDist <= _orbitDistanceMax)
                     {
-
-                            objectState = ObjectState.ORBIT;
-                             
-                       
+                        objectState = ObjectState.ORBIT;
                     }
 
                 }
                 else
                 {
-                    SwitchOnGravity(true);
+                    //SwitchOnGravity(true);
                     objectState = ObjectState.NORMALSTATE;
                 }
                 break;
@@ -74,9 +70,11 @@ public class InteractableObjects : MonoBehaviour
                 {
                     if (!added)
                     {
+                        SwitchOnGravity(false);
+
                         OrbitSpots orbit = moon.gameObject.GetComponentInChildren<OrbitSpots>();
                         orbit.AddObjects(this);
-                        SwitchOnGravity(false);
+                        
                         added = true;
                     }
 
@@ -93,19 +91,16 @@ public class InteractableObjects : MonoBehaviour
         rigidbody.angularDrag = 4f;
         rigidbody.useGravity = false;
         objectState = ObjectState.SUCKING;
+
+        Debug.Log("Sucking"); 
     }
 
-    void Orbit(Transform moon)
-    {
-
-        rigidbody.isKinematic = true;
-        transform.RotateAround(moonPosition, moon.up, _orbitSpeed * Time.deltaTime); 
-    }
 
     public void SwitchOnGravity(bool on)
     {
         if (on)
         {
+            Debug.Log("Turning ON Gravity");
             rigidbody.mass = 1f;
             rigidbody.angularDrag = 0;
             rigidbody.isKinematic = false;
@@ -114,6 +109,7 @@ public class InteractableObjects : MonoBehaviour
         }
         if (!on)
         {
+            Debug.Log("Turning Off Gravity");
             rigidbody.mass = 0;
             rigidbody.angularDrag = 0;
             rigidbody.isKinematic = true;
@@ -121,34 +117,5 @@ public class InteractableObjects : MonoBehaviour
             rigidbody.velocity = Vector3.zero;
         }
     }
-       
 
-    void CheckForOtherObjects()
-    {
-        float radius = transform.localScale.x * 1.5f;
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius);
-        if(hitColliders.Length != 0)
-        {
-            for (int i = 0; i < hitColliders.Length; i++)
-            {
-                if(hitColliders[i].tag == "Object")
-                {
-                    moonPosition.y += 0.5f;
-
-                }
-            }
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Object" && objectState == ObjectState.SUCKING)
-        {
-            InteractableObjects interactebleObj = GetComponent<InteractableObjects>();
-            if (interactebleObj && interactebleObj.objectState == ObjectState.ORBIT)
-            {
-                objectState = ObjectState.ORBIT;
-            }
-        }
-    }
 }
