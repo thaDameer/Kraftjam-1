@@ -30,9 +30,12 @@ public class MoonScript : MonoBehaviour
         {
             InteractableObjects objectInRadius = other.GetComponent<InteractableObjects>();
 
-            if (objectInRadius != null)
+            if (objectInRadius != null && !objectInRadius.inMoonRange)
             {
-                objectInRadius.Suck(transform); 
+                objectInRadius.Suck(transform);
+
+                Debug.Log("Entered Trigger"); 
+
                 if (!_objectList.Contains(objectInRadius))
                 {
                     _objectList.Add(objectInRadius);
@@ -49,7 +52,7 @@ public class MoonScript : MonoBehaviour
         {
             InteractableObjects objectInRadius = other.GetComponent<InteractableObjects>();
             objectInRadius.SwitchOnGravity(true);
-           // _objectList.Remove(objectInRadius);
+            _objectList.Remove(objectInRadius);
 
 
         }
@@ -70,10 +73,10 @@ public class MoonScript : MonoBehaviour
     public void CallBackMoon()
     {
         var dir = moonGun.transform.position - transform.position;
-        for (int i = 0; i < _objectList.Count; i++)
-        {
-            _objectList[i].SwitchOnGravity(true);
-        }
+        //for (int i = 0; i < _objectList.Count; i++)
+        //{
+        //    _objectList[i].SwitchOnGravity(true);
+        //}
         moonRb.AddForce(dir.normalized * 20f, ForceMode.Impulse);
         StartCoroutine("ReturnMoon");
         StartCoroutine(ReturnMoon());

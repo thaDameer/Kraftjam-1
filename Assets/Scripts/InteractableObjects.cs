@@ -23,7 +23,8 @@ public class InteractableObjects : MonoBehaviour
     Transform moon;
     Vector3 moonPosition;
 
-    private bool added = false; 
+    private bool added = false;
+    public bool inMoonRange = false; 
 
     private void Awake()
     {
@@ -46,14 +47,18 @@ public class InteractableObjects : MonoBehaviour
                 {
                     float orbitDist = Vector3.Distance(transform.position, this.moon.position);
 
-                    moonPosition = this.moon.position;
-                    var dir = moon.transform.position - transform.position;
-                    transform.position = Vector3.MoveTowards(transform.position, moonPosition, 30 * Time.deltaTime);
+                    
 
 
                     if(orbitDist <= _orbitDistanceMax)
                     {
                         objectState = ObjectState.ORBIT;
+                    }
+                    else
+                    {
+                        moonPosition = this.moon.position;
+                        var dir = moon.transform.position - transform.position;
+                        transform.position = Vector3.MoveTowards(transform.position, moonPosition, 30 * Time.deltaTime);
                     }
 
                 }
@@ -61,6 +66,7 @@ public class InteractableObjects : MonoBehaviour
                 {
                     //SwitchOnGravity(true);
                     objectState = ObjectState.NORMALSTATE;
+                    inMoonRange = false; 
                 }
                 break;
 
@@ -86,11 +92,15 @@ public class InteractableObjects : MonoBehaviour
 
     public void Suck(Transform moon)
     {
+        
         this.moon = moon;
         rigidbody.mass = 5f;
         rigidbody.angularDrag = 4f;
         rigidbody.useGravity = false;
+        rigidbody.isKinematic = true; 
         objectState = ObjectState.SUCKING;
+
+        inMoonRange = true; 
 
         Debug.Log("Sucking"); 
     }
