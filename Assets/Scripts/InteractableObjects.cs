@@ -87,14 +87,17 @@ public class InteractableObjects : MonoBehaviour
 
     public void Suck(Transform moon)
     {
-        
         this.moon = moon;
-        //SwitchOnGravity(true); 
         objectState = ObjectState.SUCKING;
 
         inMoonRange = true; 
 
         Debug.Log("Sucking"); 
+    }
+
+    private void Sucking()
+    {
+        // Jag vill ha allt som händer i respektive state i sina egna funktioner. Blir så rörigt annars
     }
 
 
@@ -103,7 +106,7 @@ public class InteractableObjects : MonoBehaviour
         if (on)
         {
             Debug.Log("Turning ON Gravity");
-            rigidbody.mass = 1f;
+            rigidbody.mass = 1.0f;
             rigidbody.angularDrag = 0;
             rigidbody.isKinematic = false;
             rigidbody.useGravity = true;

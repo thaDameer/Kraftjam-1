@@ -16,6 +16,8 @@ public class OrbitSpots : MonoBehaviour
 
     [SerializeField]
     private float _rotateSpeed = 30;
+
+    public bool haveDroppedAll = false; 
     
     void Start()
     {
@@ -27,7 +29,6 @@ public class OrbitSpots : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         transform.Rotate(0, _rotateSpeed * Time.deltaTime, 0);
@@ -41,36 +42,40 @@ public class OrbitSpots : MonoBehaviour
 
         _amountOfObjects++;
 
-        Debug.Log("Added stuff supposedly");
+        
     }
 
     public void ReleaseAllObjects()
     {
         transform.gameObject.SetActive(true);
-        StopCoroutine("ReleaseAllObjects_CR");
+
+        // TROR ATT VI KAN TA BORT 
+        //StopCoroutine("ReleaseAllObjects_CR");  
         //StartCoroutine(ReleaseAllObjects_CR());
         foreach (InteractableObjects obj in _objectList)
         {
             obj.transform.parent = null;
             obj.SetNormalState();
             _amountOfObjects--;
+            Debug.Log("Removed stuff");
             
         }
-    }
 
-    IEnumerator ReleaseAllObjects_CR()
-    {
-        Debug.Log("START CR");
-        for (int i = 0; i < orbitSpots.Length; i++)
-        {
-            InteractableObjects obj = orbitSpots[i].GetComponentInChildren<InteractableObjects>();
-            if (obj)
-            {
-                obj.transform.parent = null;
-                obj.SwitchOnGravity(true);
-            }
-        } 
-        yield return new WaitForSeconds(2);
+
     }
+    // TROR ATT VI KAN TA BORT 
+    //IEnumerator ReleaseAllObjects_CR()  
+    //{
+    //    Debug.Log("START CR");
+    //    for (int i = 0; i < orbitSpots.Length; i++)
+    //    {
+    //        InteractableObjects obj = orbitSpots[i].GetComponentInChildren<InteractableObjects>();
+    //        if (obj)
+    //        {
+    //            obj.transform.parent = null;
+    //        }
+    //    } 
+    //    yield return new WaitForSeconds(.1f);
+    //}
 
 }

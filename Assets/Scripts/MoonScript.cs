@@ -34,16 +34,6 @@ public class MoonScript : MonoBehaviour
     }
 
 
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Object")
-        {
-            InteractableObjects objectInRadius = other.GetComponent<InteractableObjects>();
-            objectInRadius.SwitchOnGravity(true);
-        }
-    }
-
     public void MovingForward(float moveSpeed, Vector3 aimDirection)
     {
         moonRb.AddForce(aimDirection.normalized * moveSpeed,ForceMode.Acceleration);
@@ -61,19 +51,25 @@ public class MoonScript : MonoBehaviour
         //RELEASE ALL THE OBJECTS IN ORBIT
         orbitSpots.ReleaseAllObjects();
 
-        var dir = moonGun.transform.position - transform.position;
-        moonRb.AddForce(dir.normalized * 20f, ForceMode.Impulse);
-        StartCoroutine("ReturnMoon");
-        StartCoroutine(ReturnMoon());
+            //var dir = moonGun.transform.position - transform.position;
+            //moonRb.AddForce(dir.normalized * 20f, ForceMode.Impulse);
+            StartCoroutine("ReturnMoon");
+            StartCoroutine(ReturnMoon());
+        
+        
     }
 
     IEnumerator ReturnMoon()
     {
-        bool isReturning = true; 
+        bool isReturning = true;
+
+        
 
         while(isReturning)
         {
-            
+            GetComponent<SphereCollider>().enabled = false; 
+
+
             var distance = Vector3.Distance(transform.position, moonGun.transform.position);
             var maxDist = 5f;
             var dir =  moonGun.transform.position - transform.position;
@@ -87,6 +83,7 @@ public class MoonScript : MonoBehaviour
                 isReturning = false;
             }
         }
+
         
 
         //PLAY A PARTICLE EFFECT
